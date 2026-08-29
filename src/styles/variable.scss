@@ -1,0 +1,21 @@
+// 全局 SCSS 变量（自动注入到所有 scss 文件中，无需手动 import）
+
+// 主题色
+$primary-color: #409eff;
+$success-color: #67c23a;
+$warning-color: #e6a23c;
+$danger-color: #f56c6c;
+$info-color: #909399;
+
+// 文字颜色
+$text-color-primary: #303133;
+$text-color-regular: #606266;
+$text-color-secondary: #909399;
+
+// 边框与背景
+$border-color: #dcdfe6;
+$bg-color: #f5f7fa;
+
+// 圆角与间距
+$border-radius: 4px;
+$spacing-base: 8px;
