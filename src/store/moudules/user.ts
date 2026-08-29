@@ -8,9 +8,9 @@ import type { UserState } from './types/type'
 //引入操作本地存储的工具文件
 import { GET_TOKEN, SET_TOKEN } from '@/utils/token'
 let useUserStore = defineStore('User', {
-  state: ():UserState => {
+  state: (): UserState => {
     return {
-      token:GET_TOKEN(),
+      token: GET_TOKEN(),
     }
   },
   actions: {

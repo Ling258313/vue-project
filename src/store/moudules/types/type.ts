@@ -1,3 +1,3 @@
-export interface UserState{
-    token:string
+export interface UserState {
+  token: string
 }
