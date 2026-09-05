@@ -2,9 +2,9 @@
   <el-card>
     <el-form :inline="true">
       <el-form-item label="一级分类">
-        <!-- 演示用下拉：北京/上海/广州/深圳 是写死的示例选项
-               下一步接分类仓库后，这里会改成 v-for 遍历 categoryStore 的选项 -->
+        <!-- 下一步接分类仓库后，这里会改成 v-for 遍历 categoryStore 的选项 -->
         <el-select
+          :disabled="scene === 0 ? false : true"
           placeholder="请选择一级分类"
           style="width: 140px"
           v-model="categoryStore.c1Id"
@@ -21,6 +21,7 @@
       </el-form-item>
       <el-form-item label="二级分类">
         <el-select
+          :disabled="scene === 0 ? false : true"
           placeholder="请选择二级分类"
           style="width: 140px"
           v-model="categoryStore.c2Id"
@@ -36,6 +37,7 @@
       </el-form-item>
       <el-form-item label="三级分类">
         <el-select
+          :disabled="scene === 0 ? false : true"
           placeholder="请选择三级分类"
           style="width: 140px"
           v-model="categoryStore.c3Id"
@@ -58,6 +60,9 @@ import { onMounted } from 'vue'
 //引入分类相关的仓库
 import useCategoryStore from '@/store/moudules/category'
 let categoryStore = useCategoryStore()
+// 接收父组件传递过来的 scene（0=列表场景，1=新增/修改场景），用来禁用分类下拉
+// 注意：props 必须先声明接收，否则父组件传进来也没法在内部使用
+defineProps(['scene'])
 onMounted(() => {
   //通知仓库发请求获取一级分类的数据
   categoryStore.getC1()
