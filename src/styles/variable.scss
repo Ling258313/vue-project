@@ -19,3 +19,18 @@ $bg-color: #f5f7fa;
 // 圆角与间距
 $border-radius: 4px;
 $spacing-base: 8px;
+
+//左侧菜单的宽度
+$base-menu-width: 260px;
+//左侧菜单折叠后的宽度（Element Plus 折叠菜单的标准宽度）
+$base-menu-collapse-width: 64px;
+//左侧菜单的背景色
+$base-menu-background: #001529;
+//顶部导航的高度
+$base-tabbar-height: 50px;
+
+//左侧菜单logo的设置
+$base-menu-logo-height: 50px;
+
+//左侧菜单logo的文字大小
+$base-logo-title-fontsize: 20px;

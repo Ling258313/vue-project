@@ -5,8 +5,7 @@ function createUserList() {
   return [
     {
       userId: 1,
-      avatar:
-        'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+      avatar: '/logo.png', // public 目录下的资源通过根路径访问
       username: 'admin',
       password: '111111',
       desc: '平台管理员',

@@ -1,2 +1,15 @@
 @import './reset.scss';
 
+//滚动条外观的设置
+::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: $base-menu-background;
+}
+::-webkit-scrollbar-thumb {
+    background: yellowgreen;
+    width: 10px;
+    border-radius: 10px;
+}

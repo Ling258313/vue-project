@@ -1,6 +1,6 @@
 //通过vue-router的插件来实现模板路由配置
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { constantRoute } from './router'
+import { constantRoute } from './routes'
 
 let router = createRouter({
   history: createWebHashHistory(),

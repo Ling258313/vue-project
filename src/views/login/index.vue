@@ -49,7 +49,7 @@ import { Lock, User } from '@element-plus/icons-vue'
 //收集账号和密码的数据
 import { reactive, ref } from 'vue'
 //引入路由
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 //引入消息提示
 import { ElNotification, type FormInstance } from 'element-plus'
 //引入小仓库
@@ -59,6 +59,7 @@ import { getTime } from '@/utils/times'
 
 let useStore = useUserStore()
 let router = useRouter()
+let route = useRoute()
 let loginForm = reactive({ username: 'admin', password: '111111' })
 let loading = ref(false)
 //表单实例引用，用于主动触发校验
@@ -78,13 +79,14 @@ const login = async () => {
     await useStore.userLogin(loginForm)
     ElNotification({
       type: 'success',
-      message: '欢迎回来',
+      message: `欢迎回来${loginForm.username}`,
       title: `HI,${getTime()}好`,
     })
     //加载效果消失
     loading.value = false
-    //跳转到首页
-    router.push('/')
+    // 跳转：优先回到退出前的页面（redirect 参数），没有则回首页
+    const redirect = (route.query.redirect as string) || '/'
+    router.push({ path: redirect || '/' })
   } catch (error) {
     loading.value = false
     // 失败（账号密码错误 / 网络错误）走到这里
@@ -98,7 +100,7 @@ const login = async () => {
 //rule: Element Plus 传入的规则对象（一般用不到）
 //value: 表单元素的文本内容
 //callback: 校验通过时无参调用；不通过时传入 new Error('提示信息')
-const validatorUserName = (rule: any, value: any, callback: any) => {
+const validatorUserName = (_rule: any, value: any, callback: any) => {
   // 账号规则：字母开头，5~10 位字母、数字或下划线
   if (/^[a-zA-Z][a-zA-Z0-9_]{4,9}$/.test(value)) {
     callback()
@@ -108,7 +110,7 @@ const validatorUserName = (rule: any, value: any, callback: any) => {
 }
 
 //自定义校验函数：密码
-const validatorPassword = (rule: any, value: any, callback: any) => {
+const validatorPassword = (_rule: any, value: any, callback: any) => {
   // 密码规则：6~10 位，只能包含字母或数字
   if (/^[a-zA-Z0-9]{6,10}$/.test(value)) {
     callback()

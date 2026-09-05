@@ -7,3 +7,7 @@ export const GET_TOKEN = (): string => {
   // localStorage.getItem 可能返回 null，兜底为空字符串，保证返回类型是 string
   return localStorage.getItem('TOKEN') || ''
 }
+
+export const REMOVE_TOKEN = () => {
+  return localStorage.removeItem('TOKEN')
+}
