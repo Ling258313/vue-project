@@ -4,6 +4,8 @@ import ElementPlus from 'element-plus'
 // 引入全部 element-plus 图标
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'element-plus/dist/index.css'
+// 暗黑模式样式变量（配合 html 根节点的 dark 类名生效）
+import 'element-plus/theme-chalk/dark/css-vars.css'
 // 配置 element-plus 国际化（中文）
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 // 注册 SVG 图标
@@ -37,5 +39,8 @@ app.use(pinia)
 app.use(router)
 //引入路由鉴权文件
 import './permission'
+// 应用本地保存的主题（暗黑模式 / 主题色），刷新后保持上次的选择
+import { initTheme } from '@/utils/theme'
+initTheme()
 // 将应用挂载到挂载点上
 app.mount('#app')

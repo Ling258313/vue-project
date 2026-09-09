@@ -15,7 +15,45 @@
       circle
       @click="fullScreen"
     ></el-button>
-    <el-button type="primary" size="small" :icon="Setting" circle></el-button>
+    <!-- 设置按钮：悬浮弹出"主题设置"弹层（含暗黑模式开关） -->
+    <el-popover
+      placement="bottom"
+      title="主题设置"
+      :width="300"
+      trigger="hover"
+    >
+      <el-form>
+        <el-form-item label="主题颜色">
+          <!-- teleported: false → 颜色面板渲染在 popover 内部，点面板时 popover 不会关闭 -->
+          <el-color-picker
+            v-model="color"
+            show-alpha
+            :predefine="predefineColors"
+            size="small"
+            :teleported="false"
+            @change="setColor"
+          />
+        </el-form-item>
+        <el-form-item label="暗黑模式">
+          <el-switch
+            v-model="dark"
+            size="small"
+            inline-prompt
+            active-icon="MoonNight"
+            inactive-icon="Sunny"
+            @change="changeDark"
+          />
+        </el-form-item>
+      </el-form>
+      <template #reference>
+        <el-button
+          type="primary"
+          size="small"
+          :icon="Setting"
+          circle
+        ></el-button>
+      </template>
+    </el-popover>
     <!-- 头像：优先显示登录用户的头像，没有则用默认 logo -->
     <img
       :src="userStore.userInfo?.avatar || setting.logo"
@@ -39,12 +77,57 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+// 主题工具：读写本地存储 + 应用到 html 根节点
+import {
+  GET_COLOR,
+  GET_DARK,
+  SET_COLOR,
+  SET_DARK,
+  applyColor,
+  applyDark,
+} from '@/utils/theme'
 //获取小仓库
 import useLayoutSettingsStore from '@/store/moudules/settings'
 let layoutsettingStore = useLayoutSettingsStore()
 //引入用户小仓库（拿登录用户的信息）
 import useUserStore from '@/store/moudules/user'
 let userStore = useUserStore()
+// 暗黑模式开关（初始值取本地存储，刷新后保持一致）
+let dark = ref<boolean>(GET_DARK())
+
+// 主题色（没设置过时显示 EP 默认主色）
+let color = ref<string>(GET_COLOR() || '#409eff')
+
+// 主题色预设（可选颜色）
+const predefineColors = ref([
+  '#ff4500',
+  '#ff8c00',
+  '#ffd700',
+  '#90ee90',
+  '#00ced1',
+  '#1e90ff',
+  '#c71585',
+  '#05ceb7',
+  'rgba(255, 69, 0, 0.68)',
+  'rgb(255, 120, 0)',
+  'hsv(51, 100, 98)',
+  'hsla(209, 100%, 56%, 0.73)',
+  '#c7158577',
+])
+
+// 暗黑模式切换：应用到 html + 持久化
+const changeDark = () => {
+  applyDark(dark.value)
+  SET_DARK(dark.value)
+}
+
+// 主题色变化：应用主色与变体 + 持久化
+const setColor = () => {
+  applyColor(color.value)
+  SET_COLOR(color.value)
+}
+
 //刷新按钮点击的回调
 const updateRefsh = () => {
   layoutsettingStore.refsh = !layoutsettingStore.refsh
@@ -89,7 +172,7 @@ const handleCommand = async (command: string) => {
   margin-right: 20px;
   .el-dropdown-link {
     cursor: pointer;
-    color: #090909;
+    color: var(--el-text-color-primary);
     display: flex;
     align-items: center;
     outline: none;

@@ -16,10 +16,10 @@ import Setting from '@/layout/tabbar/setting/index.vue'
 .tabbar {
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  background-color: var(--el-bg-color);
   justify-content: space-between;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid var(--el-border-color-light);
 }
 </style>

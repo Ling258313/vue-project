@@ -109,7 +109,7 @@ let layoutStore = useLayoutStore()
   padding: 20px;
   width: calc(100% - $base-menu-width);
   height: calc(100vh - $base-tabbar-height);
-  background: #f5f7fa;
+  background: var(--el-bg-color-page);
   left: $base-menu-width;
   top: $base-tabbar-height;
   overflow: auto;
