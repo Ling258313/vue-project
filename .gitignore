@@ -23,6 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# 部署用的密码文件（deploy/.env.example 是模板，deploy/.env 放真实密码，别提交）
+deploy/.env
+
 # Lint caches
 .eslintcache
 .stylelintcache

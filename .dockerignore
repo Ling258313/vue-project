@@ -1,0 +1,13 @@
+# Docker 构建上下文里不需要的东西（越少上传越快）
+node_modules
+dist
+.git
+.gitignore
+.vscode
+.idea
+*.log
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+# 部署用的密码文件绝不能进镜像
+deploy/.env

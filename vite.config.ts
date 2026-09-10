@@ -7,6 +7,15 @@ import { viteMockServe } from 'vite-plugin-mock'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   let env = loadEnv(mode, process.cwd())
+  // 代理配置：开发服务器(dev)和预览服务器(preview)共用一份
+  // 线上由 Nginx 做同样的转发，所以前端只管写相对路径 /api
+  const apiProxy = {
+    target: env.VITE_SERVE || 'http://127.0.0.1:10086',
+    // 需要代理跨域
+    changeOrigin: true,
+    // 路径重写：后端路由没有 /api 前缀，转发时去掉
+    rewrite: (path: string) => path.replace(/^\/api/, ''),
+  }
   return {
     plugins: [
       vue(),
@@ -29,14 +38,13 @@ export default defineConfig(({ mode }) => {
         ignored: [/.tmpdir[\/]/, /.tmp$/],
       },
       proxy: {
-        [env.VITE_APP_BASE_API]: {
-          //获取数据的服务器地址设置
-          target: env.VITE_SERVE,
-          //需要代理跨域
-          changeOrigin: true,
-          //路径重写
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
+        [env.VITE_APP_BASE_API]: apiProxy,
+      },
+    },
+    // 打包产物用 pnpm preview 在本机看效果时，同样需要代理（线上这一步由 Nginx 承担）
+    preview: {
+      proxy: {
+        [env.VITE_APP_BASE_API]: apiProxy,
       },
     },
     css: {

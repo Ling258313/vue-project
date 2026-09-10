@@ -1,0 +1,80 @@
+# 上线用的编排：前端(Nginx) + 后端(Go) + MySQL
+#
+# 用法（在 deploy 目录下）：
+#   cp .env.example .env      # 然后改里面的密码
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# 三个服务的网络关系：
+#   外网 --80--> frontend(Nginx) --/api--> backend:10086 --3306--> mysql
+#   只有 frontend 对外开端口，backend 和 mysql 都只在 Docker 内网里
+
+services:
+  mysql:
+    # 用国内镜像源，服务器上拉取更快（换成 mysql:8.0 也行）
+    image: registry.cn-shanghai.aliyuncs.com/wangjian3306/mysql:8.0
+    container_name: vue3_admin_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      TZ: Asia/Shanghai
+    # 注意：这里故意不写 ports，数据库不对宿主机/公网暴露
+    volumes:
+      # 数据落在命名卷里，容器重建也不会丢
+      - mysql-data:/var/lib/mysql
+      # 首次启动（数据目录为空时）会自动执行这里的建表脚本
+      - $BACKEND_CONTEXT/init-sql:/docker-entrypoint-initdb.d:ro
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app
+
+  backend:
+    build:
+      # 后端仓库路径（.env 里的 BACKEND_CONTEXT，默认是前端仓库的上一级同级目录）
+      context: $BACKEND_CONTEXT
+    container_name: vue3_admin_backend
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      VUE3_ADMIN_MYSQL_HOST: mysql
+      VUE3_ADMIN_MYSQL_DATABASE: $MYSQL_DATABASE
+      VUE3_ADMIN_MYSQL_USER: $MYSQL_USER
+      VUE3_ADMIN_MYSQL_PASSWORD: $MYSQL_PASSWORD
+    depends_on:
+      mysql:
+        condition: service_healthy
+    # 同样不对外开端口，只有 Nginx 通过内网访问它
+    networks:
+      - app
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      args:
+        NPM_REGISTRY: $NPM_REGISTRY
+    container_name: vue3_admin_frontend
+    restart: always
+    ports:
+      # 只需要对外开这一个端口（以后上 HTTPS 再加 443）
+      - "$HTTP_PORT:80"
+    depends_on:
+      - backend
+    networks:
+      - app
+
+volumes:
+  mysql-data:
+
+networks:
+  app:
