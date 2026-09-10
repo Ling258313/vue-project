@@ -19,7 +19,8 @@ export const constantRoute = [
     component: () => import('@/layout/index.vue'),
     name: 'layout',
     meta: {
-      title: 'layout',
+      // 这条是布局外壳路由，只包着首页，面包屑第一级就显示"首页"
+      title: '首页',
       hidden: false,
       icon: 'Avatar',
     },
