@@ -4,7 +4,8 @@ import type { CategoryObj } from '@/api/product/attr/type'
 
 export interface UserState {
   token: string
-  menuRoutes: RouteRecordRaw[] //菜单路由
+  menuRoutes: RouteRecordRaw[] //侧边栏用的菜单路由（常量路由 + 权限过滤后的异步路由）
+  asyncRoutes: RouteRecordRaw[] //权限过滤后、需要动态注册的异步路由
   userInfo: userInfo | null //登录用户的信息
 }
 

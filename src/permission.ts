@@ -1,5 +1,5 @@
 // 路由鉴权
-import router from '@/router'
+import router, { registerDynamicRoutes } from '@/router'
 import useUserStore from '@/store/moudules/user'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -27,7 +27,7 @@ router.beforeEach(async (to: any) => {
     if (to.path === '/login') {
       return { path: '/' }
     }
-    // 有 token 但没有用户信息（页面刷新/状态丢失后）→ 补拉一次，让头像/名字自愈
+    // 有 token 但没有用户信息（页面刷新、切换账号后）→ 拉用户信息 + 注册动态路由
     if (!userStore.userInfo) {
       try {
         await userStore.getUserInfo()
@@ -37,6 +37,15 @@ router.beforeEach(async (to: any) => {
         ElMessage.error('登录状态已失效，请重新登录')
         return { path: '/login', query: { redirect: to.fullPath } }
       }
+      // ② -1 注册当前用户有权限的异步路由（含最后的 404 兜底路由）
+      registerDynamicRoutes(userStore.asyncRoutes)
+      // ② -2 动态路由是刚注册进来的，必须重新导航一次才能匹配上，
+      //       否则刷新页面（重放）时会直接落到 404
+      return { ...to, replace: true }
+    }
+    // ② -3 已登录且路由已就绪：地址一条都没匹配上 → 统一进 404（带上原始地址）
+    if (to.matched.length === 0) {
+      return { path: '/404', query: { from: to.fullPath } }
     }
     return true
   }
