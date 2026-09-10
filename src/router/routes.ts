@@ -1,3 +1,5 @@
+import type { RouteLocation } from 'vue-router'
+
 //对外配置暴露路由(常量路由)
 export const constantRoute = [
   {
@@ -46,7 +48,11 @@ export const constantRoute = [
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/404',
+    // 把用户访问的原始地址带过去，404 页面里可以显示出来
+    redirect: (to: RouteLocation) => ({
+      path: '/404',
+      query: { from: to.fullPath },
+    }),
     name: 'Any',
     meta: {
       title: '任意路由',
