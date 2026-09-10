@@ -6,6 +6,7 @@
     <el-card class="box-card">
       <!-- 卡片顶部的添加品牌按钮 -->
       <el-button
+        v-has="'btn.Trademark.add'"
         type="primary"
         size="default"
         icon="Plus"
@@ -46,12 +47,14 @@
         <el-table-column label="品牌操作">
           <template #="{ row }">
             <el-button
+              v-has="'btn.Trademark.update'"
               type="primary"
               size="small"
               icon="Edit"
               @click="updateTrademark(row)"
             ></el-button>
             <el-button
+              v-has="'btn.Trademark.remove'"
               type="danger"
               size="small"
               icon="Delete"

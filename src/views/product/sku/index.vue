@@ -44,6 +44,7 @@
           <template #="{ row }">
             <!-- 上架/下架：isSale==1(已上架) 显示 Bottom 表示下架，否则显示 Top 表示上架 -->
             <el-button
+              v-has="'btn.Sku.updown'"
               type="primary"
               size="small"
               :icon="row.isSale == 1 ? 'Bottom' : 'Top'"
@@ -51,6 +52,7 @@
               @click="updateSale(row)"
             ></el-button>
             <el-button
+              v-has="'btn.Sku.update'"
               type="primary"
               size="small"
               icon="Edit"
@@ -58,6 +60,7 @@
               @click="updateSku"
             ></el-button>
             <el-button
+              v-has="'btn.Sku.detail'"
               type="primary"
               size="small"
               icon="InfoFilled"
@@ -71,6 +74,7 @@
             >
               <template #reference>
                 <el-button
+                  v-has="'btn.Sku.remove'"
                   type="primary"
                   size="small"
                   icon="Delete"

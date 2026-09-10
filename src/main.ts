@@ -12,6 +12,8 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'virtual:svg-icons-register'
 // 引入自定义插件对象：注册全局组件
 import globalComponents from '@/components'
+// 注册按钮权限指令 v-has
+import { isHasButton } from '@/directive/has'
 import App from '@/App.vue'
 //引用路由
 import router from './router'
@@ -35,6 +37,8 @@ import '@/styles/index.scss'
 app.use(globalComponents)
 //安装仓库
 app.use(pinia)
+// 注册全局按钮权限指令 v-has（必须在 mount 之前）
+isHasButton(app)
 // 注册模板路由
 app.use(router)
 //引入路由鉴权文件

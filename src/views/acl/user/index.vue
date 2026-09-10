@@ -26,10 +26,16 @@
 
     <!-- 卡片二：用户列表 -->
     <el-card style="margin: 10px 0px">
-      <el-button type="primary" size="default" @click="addUser">
+      <el-button
+        v-has="'btn.User.add'"
+        type="primary"
+        size="default"
+        @click="addUser"
+      >
         添加用户
       </el-button>
       <el-button
+        v-has="'btn.User.remove'"
         type="primary"
         size="default"
         :disabled="selectIdArr.length ? false : true"
@@ -84,6 +90,7 @@
         <el-table-column label="操作" width="300px" align="center">
           <template #="{ row }">
             <el-button
+              v-has="'btn.User.assgin'"
               type="primary"
               size="small"
               icon="User"
@@ -92,6 +99,7 @@
               分配角色
             </el-button>
             <el-button
+              v-has="'btn.User.update'"
               type="primary"
               size="small"
               icon="Edit"
@@ -105,7 +113,12 @@
               @confirm="deleteUser(row.id)"
             >
               <template #reference>
-                <el-button type="primary" size="small" icon="Delete">
+                <el-button
+                  v-has="'btn.User.remove'"
+                  type="primary"
+                  size="small"
+                  icon="Delete"
+                >
                   删除
                 </el-button>
               </template>

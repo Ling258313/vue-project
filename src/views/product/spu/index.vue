@@ -8,6 +8,7 @@
       <!-- 场景 0：展示已有 SPU 数据 -->
       <div v-show="scene === 0">
         <el-button
+          v-has="'btn.Spu.add'"
           type="primary"
           size="default"
           icon="Plus"
@@ -33,6 +34,7 @@
           <el-table-column label="操作">
             <template #="{ row }">
               <el-button
+                v-has="'btn.Spu.addsku'"
                 type="primary"
                 size="small"
                 icon="Plus"
@@ -40,6 +42,7 @@
                 @click="addSku(row)"
               ></el-button>
               <el-button
+                v-has="'btn.Spu.update'"
                 type="primary"
                 size="small"
                 icon="Edit"
@@ -47,6 +50,7 @@
                 @click="updateSpu(row)"
               ></el-button>
               <el-button
+                v-has="'btn.Spu.skus'"
                 type="primary"
                 size="small"
                 icon="View"
@@ -54,6 +58,7 @@
                 @click="getSku(row)"
               ></el-button>
               <el-button
+                v-has="'btn.Spu.delete'"
                 type="danger"
                 size="small"
                 icon="Delete"

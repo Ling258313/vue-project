@@ -16,6 +16,7 @@
           <!-- 三个操作按钮：事件与弹窗在后续小节接入 -->
           <!-- 四级（按钮）下面不能再加子节点 -->
           <el-button
+            v-has="'btn.Permission.add'"
             type="primary"
             size="small"
             :disabled="row.level == 4 ? true : false"
@@ -25,6 +26,7 @@
           </el-button>
           <!-- 一级菜单不允许编辑/删除 -->
           <el-button
+            v-has="'btn.Permission.update'"
             type="primary"
             size="small"
             :disabled="row.level == 1 ? true : false"
@@ -39,6 +41,7 @@
           >
             <template #reference>
               <el-button
+                v-has="'btn.Permission.remove'"
                 type="primary"
                 size="small"
                 :disabled="row.level == 1 ? true : false"

@@ -11,6 +11,7 @@
     <el-card style="margin: 10px 0px">
       <div v-show="scene == 0">
         <el-button
+          v-has="'btn.Attr.add'"
           type="primary"
           size="default"
           icon="Plus"
@@ -47,6 +48,7 @@
             <template #="{ row }">
               <!-- 修改已有属性的按钮 -->
               <el-button
+                v-has="'btn.Attr.update'"
                 type="primary"
                 size="small"
                 icon="Edit"
@@ -61,6 +63,7 @@
                 <!-- reference 具名插槽：放触发弹层的按钮 -->
                 <template #reference>
                   <el-button
+                    v-has="'btn.Attr.remove'"
                     type="primary"
                     size="small"
                     icon="Delete"

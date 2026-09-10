@@ -29,7 +29,13 @@
 
     <!-- 卡片二：角色列表 -->
     <el-card style="margin: 10px 0px">
-      <el-button type="primary" size="default" icon="Plus" @click="addRole">
+      <el-button
+        v-has="'btn.Role.add'"
+        type="primary"
+        size="default"
+        icon="Plus"
+        @click="addRole"
+      >
         添加角色
       </el-button>
       <el-table border style="margin: 10px 0px" :data="allRole">
@@ -61,6 +67,7 @@
           <template #="{ row }">
             <!-- 三个操作按钮：弹窗与事件在后续小节接入 -->
             <el-button
+              v-has="'btn.Role.assgin'"
               type="primary"
               size="small"
               icon="User"
@@ -69,6 +76,7 @@
               分配权限
             </el-button>
             <el-button
+              v-has="'btn.Role.update'"
               type="primary"
               size="small"
               icon="Edit"
@@ -82,7 +90,12 @@
               @confirm="removeRole(row.id)"
             >
               <template #reference>
-                <el-button type="primary" size="small" icon="Delete">
+                <el-button
+                  v-has="'btn.Role.remove'"
+                  type="primary"
+                  size="small"
+                  icon="Delete"
+                >
                   删除
                 </el-button>
               </template>
